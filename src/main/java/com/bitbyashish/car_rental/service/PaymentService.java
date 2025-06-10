@@ -19,7 +19,7 @@ public class PaymentService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
-        payment.setPaymentConfirmed(true);
+        payment.setStatus("COMPLETED"); // Changed from setPaymentConfirmed(true)
         Payment savedPayment = paymentRepository.save(payment);
 
         booking.setPayment(savedPayment);

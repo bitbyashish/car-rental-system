@@ -23,8 +23,8 @@ public class BookingController {
     public ResponseEntity<Booking> bookCar(
             @PathVariable Long customerId,
             @PathVariable Long carVariantId,
-            @RequestBody Booking booking) {
-        return ResponseEntity.ok(bookingService.bookCar(customerId, carVariantId, booking));
+            @RequestBody Booking bookingRequest) {
+        return ResponseEntity.ok(bookingService.bookCar(customerId, carVariantId, bookingRequest));
     }
 
     @PutMapping("/approve/{bookingId}/{carVariantId}")
@@ -33,6 +33,4 @@ public class BookingController {
             @PathVariable Long carVariantId) {
         return ResponseEntity.ok(bookingService.approveBooking(bookingId, carVariantId));
     }
-
-    // other endpoints
 }
