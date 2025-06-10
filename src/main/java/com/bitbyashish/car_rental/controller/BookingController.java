@@ -1,6 +1,7 @@
 package com.bitbyashish.car_rental.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bitbyashish.car_rental.dto.BookingDatesRequest;
 import com.bitbyashish.car_rental.entity.Booking;
 import com.bitbyashish.car_rental.service.BookingService;
 
@@ -20,17 +22,29 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping("/{customerId}/{carVariantId}")
-    public ResponseEntity<Booking> bookCar(
+    public ResponseEntity<Booking> createBooking(
             @PathVariable Long customerId,
             @PathVariable Long carVariantId,
-            @RequestBody Booking bookingRequest) {
-        return ResponseEntity.ok(bookingService.bookCar(customerId, carVariantId, bookingRequest));
+            @RequestBody BookingDatesRequest dates) {
+        
+        Booking booking = bookingService.createBooking(
+            customerId, 
+            carVariantId, 
+            dates.getStartDate(), 
+            dates.getEndDate()
+        );
+        return ResponseEntity.ok(booking);
     }
 
-    @PutMapping("/approve/{bookingId}/{carVariantId}")
+    @PutMapping("/{bookingId}/approve")
     public ResponseEntity<Booking> approveBooking(
-            @PathVariable Long bookingId,
-            @PathVariable Long carVariantId) {
-        return ResponseEntity.ok(bookingService.approveBooking(bookingId, carVariantId));
+            @PathVariable Long bookingId) {
+        return ResponseEntity.ok(bookingService.approveBooking(bookingId));
+    }
+
+    @GetMapping("/{bookingId}")
+    public ResponseEntity<Booking> getBooking(
+            @PathVariable Long bookingId) {
+        return ResponseEntity.ok(bookingService.getBookingById(bookingId));
     }
 }
